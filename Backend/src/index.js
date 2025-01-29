@@ -5,7 +5,13 @@ import router from "./routes/userRoutes.js"
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://users-login-1.onrender.com/',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+
 app.use(express.json());
 
 app.use('/api', router);
