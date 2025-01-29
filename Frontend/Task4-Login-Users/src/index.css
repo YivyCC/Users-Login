@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body{
+  background-color: #364153;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  body{
+    background-color: #364153;
+    box-sizing: border-box;
+  }
+}
