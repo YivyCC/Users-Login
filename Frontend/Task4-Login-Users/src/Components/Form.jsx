@@ -12,7 +12,7 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
-  baseApiUrl = `https://users-login-tu6t.onrender.com/api`;
+  const baseApiUrl = `https://users-login-tu6t.onrender.com/api`;
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {

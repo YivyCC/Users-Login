@@ -30,4 +30,4 @@ router.post('/bulk-action', userController.bulkActionController);
 // Get user by email
 router.get('/users/:email', userController.getUserByEmailController);
 
-export default router;
+export default router; 
