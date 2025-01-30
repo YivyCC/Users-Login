@@ -5,7 +5,7 @@ import router from "./routes/userRoutes.js"
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-alert(PORT);
+console.log(PORT);
 
 app.use((req, res, next) => {
   console.log(`Request received: ${req.method} ${req.originalUrl}`);
