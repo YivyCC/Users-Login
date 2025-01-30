@@ -59,7 +59,9 @@ function Toolbar({usersData, setTableData, loggedUserEmail, setIsLoggedIn}) {
       const loggedInUser = response.data;
       if (loggedInUser.isblocked) {
         setIsError({msg: 'Your account has been blocked. Redirecting you to the login page.', open: true});
-        setIsLoggedIn(false); // Notify Table.jsx to notify App.jsx to redirect to the login page
+        setTimeout(() => {
+          setIsLoggedIn(false); // Notify Table.jsx to notify App.jsx to redirect to the login page
+        }, 5000);
         updateIsActiveOffline(loggedUserEmail);
         return true;
       }
