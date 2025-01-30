@@ -43,8 +43,6 @@ function Form({ onLoginSuccess }) {
       if (response.data.success) {
         setIsError({msg: 'User registered.', open: true});
         setIsRegistered(true); // Switch to login after successful registration
-      } else {
-        setIsError({msg: 'This email address is already registered. Please use a different one or try logging in.', open: true});
       }
     } catch (err) {
       console.error('Error registering user:', err);
