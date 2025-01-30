@@ -50,13 +50,14 @@ function Form({ onLoginSuccess }) {
   
   const checkIfUserBlocked = async () => {
     try {
-      const response = await axios.get(`${baseApiUrl}/users/${email}`);
+      console.log('deseo pinga');
+      // const response = await axios.get(`${baseApiUrl}/users/${email}`);
 
-      const loggedInUser = response.data;
-      if (loggedInUser.isblocked) {
-        setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
-        return true; // User is blocked
-      } else return false;
+      // const loggedInUser = response.data;
+      // if (loggedInUser.isblocked) {
+      //   setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
+      //   return true; // User is blocked
+      // } else return false;
     } catch (error) {
       console.error("Error fetching user data when retrieving email:", error.response || error);
       return true; // If there's an error, return true to stop further execution

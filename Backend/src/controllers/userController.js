@@ -123,7 +123,7 @@ export const bulkActionController = async (req, res) => {
 
 export const getUserByEmailController = async (req, res) => {
   const { email } = req.params;
-  console.log('Requested email:', email);  // Log to check if the email is received correctly
+  console.log('Requested email:', email);
   try {
     const user = await userServices.getUserByEmail(email);
     if (!user) {
