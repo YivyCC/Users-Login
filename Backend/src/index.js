@@ -12,11 +12,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(cors({
-//   origin: 'https://users-login-1.onrender.com',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true,
-// }));
+app.use(cors({
+  origin: 'https://users-login-1.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 app.use(express.json());
 
