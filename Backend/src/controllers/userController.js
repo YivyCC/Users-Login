@@ -123,10 +123,11 @@ export const bulkActionController = async (req, res) => {
 
 export const getUserByEmailController = async (req, res) => {
   const { email } = req.params;
-  console.log('Received email:', email); // Log the email
+  console.log('Requested email:', email);  // Log to check if the email is received correctly
   try {
     const user = await userServices.getUserByEmail(email);
     if (!user) {
+      console.log('User not found');
       return res.status(404).json({ message: 'User not found' });
     }
     res.status(200).json(user);
@@ -135,4 +136,5 @@ export const getUserByEmailController = async (req, res) => {
     res.status(500).json({ message: 'Error fetching user data' });
   }
 };
+
 
