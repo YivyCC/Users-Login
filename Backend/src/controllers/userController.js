@@ -122,14 +122,17 @@ export const bulkActionController = async (req, res) => {
 };
 
 export const getUserByEmailController = async (req, res) => {
-  const { email } = req.params; // Extract email from the URL parameter
+  const { email } = req.params;
+  console.log('Received email:', email); // Log the email
   try {
-    const user = await userServices.getUserByEmail(email); // Your DB call to get the user
+    const user = await userServices.getUserByEmail(email);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json(user); // Send back the user info
+    res.status(200).json(user);
   } catch (err) {
+    console.error('Error fetching user data:', err);
     res.status(500).json({ message: 'Error fetching user data' });
   }
 };
+

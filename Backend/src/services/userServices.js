@@ -125,6 +125,7 @@ export const getUserByEmail = async (email) => {
     if (result.rows.length === 0) {
       throw new Error('User not found');
     }
+    console.log('DB result:', result.rows);
     return result.rows[0];
   } catch (err) {
     throw new Error(`Error fetching user by email: ${err.message}`);

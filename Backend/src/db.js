@@ -14,7 +14,10 @@ const db = new pg.Client({
   },
 });
 
-db.connect();
+db.connect()
+  .then(() => console.log('Connected to the database'))
+  .catch(err => console.error('Database connection error', err));
+
 
 db.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
