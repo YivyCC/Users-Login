@@ -3,6 +3,7 @@ import Button from "./Button.jsx";
 import { useState } from "react";
 import axios from "axios";
 
+
 function Form({ onLoginSuccess }) {
   const [isRegistered, setIsRegistered] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -11,7 +12,7 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
-  const baseApiUrl = process.env.REACT_APP_API_URL;
+  const baseApiUrl = import.meta.env.VITE_API_URL;
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {
