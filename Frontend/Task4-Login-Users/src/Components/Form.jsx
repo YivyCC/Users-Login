@@ -56,10 +56,10 @@ function Form({ onLoginSuccess }) {
       if (loggedInUser.isblocked) {
         setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
         return true; // User is blocked
-      }
+      } else return false;
     } catch (error) {
       console.error("Error fetching user data when retrieving email:", error.response || error);
-      return false; // If there's an error, assume the user is not blocked or log error
+      return true; // If there's an error, return true to stop further execution
     }
   }; 
 
