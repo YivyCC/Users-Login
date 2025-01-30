@@ -11,7 +11,7 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
-  const baseApiUrl = 'https://users-login-1.onrender.com/api';
+  const baseApiUrl = process.env.REACT_APP_API_URL;
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {
@@ -47,10 +47,9 @@ function Form({ onLoginSuccess }) {
     }
   };
 
-  
   const checkIfUserBlocked = async () => {
     // try {
-      const response = await axios.get(`${baseApiUrl}/users/${email}`);
+      const response = await axios.get(`${baseApiUrl}/api/users/${email}`);
       if (response.status === 200) {
         console.log("Response is OK:", response.data);
       } else {
