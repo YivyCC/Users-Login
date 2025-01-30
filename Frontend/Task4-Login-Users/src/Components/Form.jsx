@@ -15,7 +15,7 @@ function Form({ onLoginSuccess }) {
   // const baseApiUrl = import.meta.env.VITE_API_URL;
 
   const clientAxios = axios.create({
-    baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+    baseURL: `${import.meta.env.VITE_API_URL}/api`,
   });
 
   // Handle form submission for Register or Login
