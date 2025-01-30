@@ -49,7 +49,7 @@ function Form({ onLoginSuccess }) {
 
   
   const checkIfUserBlocked = async () => {
-    try {
+    // try {
       const response = await axios.get(`${baseApiUrl}/users/${email}`);
       if (response.status === 200) {
         console.log("Response is OK:", response.data);
@@ -61,10 +61,10 @@ function Form({ onLoginSuccess }) {
         setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
         return true; // User is blocked
       } else return false;
-    } catch (error) {
-      console.error("Error fetching user data when retrieving email:", error.response || error);
-      return true; // If there's an error, return true to stop further execution
-    }
+    // } catch (error) {
+    //   console.error("Error fetching user data when retrieving email:", error.response || error);
+    //   return true; // If there's an error, return true to stop further execution
+    // }
   }; 
 
   // Login the user
