@@ -12,7 +12,11 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  // const baseApiUrl = import.meta.env.VITE_API_URL;
+
+  const clientAxios = axios.create({
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+  });
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {
@@ -39,7 +43,7 @@ function Form({ onLoginSuccess }) {
 
   const handleRegister = async (userData) => {
     try {
-      const response = await axios.post(`${baseApiUrl}/registerNewUser`, userData);
+      const response = await clientAxios.post(`/registerNewUser`, userData);
       alert('User registered:', response.data);
       setIsRegistered(true); // Switch to login after successful registration
     } catch (err) {
@@ -50,7 +54,7 @@ function Form({ onLoginSuccess }) {
 
   const checkIfUserBlocked = async () => {
     // try {
-      const response = await axios.get(`${baseApiUrl}/api/users/${email}`);
+      const response = await clientAxios.get(`/users/${email}`);
       if (response.status === 200) {
         console.log("Response is OK:", response.data);
       } else {
@@ -74,7 +78,7 @@ function Form({ onLoginSuccess }) {
       return;
     }
     try {
-      const response = await axios.post(`${baseApiUrl}/login`, {
+      const response = await clientAxios.post(`/login`, {
         email,
         password,
       });
