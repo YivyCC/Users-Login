@@ -40,7 +40,7 @@ function Form({ onLoginSuccess }) {
   const handleRegister = async (userData) => {
     try {
       const response = await axios.post(`${baseApiUrl}/registerNewUser`, userData);
-      if (response.data.success) {
+      if (response.data) {
         setIsError({msg: 'User registered.', open: true});
         setIsRegistered(true); // Switch to login after successful registration
       }
