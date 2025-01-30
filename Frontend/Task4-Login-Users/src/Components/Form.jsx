@@ -40,8 +40,12 @@ function Form({ onLoginSuccess }) {
   const handleRegister = async (userData) => {
     try {
       const response = await axios.post(`${baseApiUrl}/registerNewUser`, userData);
-      setIsError({msg: 'User registered.', open: true});
-      setIsRegistered(true); // Switch to login after successful registration
+      if (response.data.success) {
+        setIsError({msg: 'User registered.', open: true});
+        setIsRegistered(true); // Switch to login after successful registration
+      } else {
+        setIsError({msg: 'This email address is already registered. Please use a different one or try logging in.', open: true});
+      }
     } catch (err) {
       console.error('Error registering user:', err);
       setIsError({msg: 'This email address is already registered. Please use a different one or try logging in.', open: true});
@@ -51,11 +55,6 @@ function Form({ onLoginSuccess }) {
   const checkIfUserBlocked = async () => {
     try {
       const response = await axios.get(`${baseApiUrl}/users/${email}`);
-      if (response.status === 200) {
-        console.log("Response is OK:", response.data);
-      } else {
-        console.log("Unexpected response:", response.status, response.data);
-      }
       const loggedInUser = response.data;
       if (loggedInUser.isblocked) {
         setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
