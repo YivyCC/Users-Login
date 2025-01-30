@@ -12,11 +12,7 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
-  // const baseApiUrl = import.meta.env.VITE_API_URL;
-
-  const clientAxios = axios.create({
-    baseURL: `https://users-login-tu6t.onrender.com/api`,
-  });
+  baseApiUrl = `https://users-login-tu6t.onrender.com/api`;
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {
@@ -43,8 +39,8 @@ function Form({ onLoginSuccess }) {
 
   const handleRegister = async (userData) => {
     try {
-      const response = await clientAxios.post(`/registerNewUser`, userData);
-      alert('User registered:', response.data);
+      const response = await axios.post(`${baseApiUrl}/registerNewUser`, userData);
+      setIsError({msg: 'User registered.', open: true});
       setIsRegistered(true); // Switch to login after successful registration
     } catch (err) {
       console.error('Error registering user:', err);
@@ -53,8 +49,8 @@ function Form({ onLoginSuccess }) {
   };
 
   const checkIfUserBlocked = async () => {
-    // try {
-      const response = await clientAxios.get(`/users/${email}`);
+    try {
+      const response = await axios.get(`${baseApiUrl}/users/${email}`);
       if (response.status === 200) {
         console.log("Response is OK:", response.data);
       } else {
@@ -65,10 +61,10 @@ function Form({ onLoginSuccess }) {
         setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
         return true; // User is blocked
       } else return false;
-    // } catch (error) {
-    //   console.error("Error fetching user data when retrieving email:", error.response || error);
-    //   return true; // If there's an error, return true to stop further execution
-    // }
+    } catch (error) {
+      console.error("Error fetching user data when retrieving email:", error.response || error);
+      return true; // If there's an error, return true to stop further execution
+    }
   }; 
 
   // Login the user
@@ -78,7 +74,7 @@ function Form({ onLoginSuccess }) {
       return;
     }
     try {
-      const response = await clientAxios.post(`/login`, {
+      const response = await axios.post(`${baseApiUrl}/login`, {
         email,
         password,
       });

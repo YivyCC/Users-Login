@@ -6,7 +6,7 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
     const [tableData, setTableData] = useState([]);
     const [error, setError] = useState(null);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-    const baseApiUrl = 'https://users-login-1.onrender.com/api';
+    const baseApiUrl = `https://users-login-tu6t.onrender.com/api`;
 
     // Initial table data fetch
     useEffect(()=>{

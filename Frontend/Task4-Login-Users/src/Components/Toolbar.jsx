@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 function Toolbar({usersData, setTableData, loggedUserEmail, setIsLoggedIn}) {
   const [error, setIsError] = useState({ msg: '', open: false });
-  const baseApiUrl = 'https://users-login-1.onrender.com/api';
+  const baseApiUrl = `https://users-login-tu6t.onrender.com/api`;
 
   // Handle block, unblock, delete actions
   const handleAction = async (action) => {
