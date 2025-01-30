@@ -11,6 +11,7 @@ function Form({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [error, setIsError] = useState({ msg: '', open: false });
+  const baseApiUrl = 'https://users-login-1.onrender.com/api';
 
   // Handle form submission for Register or Login
   const handleSubmit = async (e) => {
@@ -37,7 +38,7 @@ function Form({ onLoginSuccess }) {
 
   const handleRegister = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:3000/api/registerNewUser', userData);
+      const response = await axios.post(`${baseApiUrl}/registerNewUser`, userData);
       alert('User registered:', response.data);
       setIsRegistered(true); // Switch to login after successful registration
     } catch (err) {
@@ -46,38 +47,36 @@ function Form({ onLoginSuccess }) {
     }
   };
 
-  // Check if the logged-in user is blocked
+  
   const checkIfUserBlocked = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/users/${email}`);
+      const response = await axios.get(`${baseApiUrl}/users/${email}`);
 
       const loggedInUser = response.data;
       if (loggedInUser.isblocked) {
-        alert("Your account is blocked.");
+        setIsError({msg: 'Your account is blocked. Wait until you are unblocked or register a new account.', open: true});
         return true; // User is blocked
       }
     } catch (error) {
       console.error("Error fetching user data when retrieving email:", error.response || error);
-      return false; // If there's an error, assume the user is not blocked
+      return false; // If there's an error, assume the user is not blocked or log error
     }
   }; 
 
-  // Login the user (new functionality)
+  // Login the user
   const handleLogin = async () => {
     const isBlocked = await checkIfUserBlocked();
     if (isBlocked) {
-      return; // If blocked, stop further execution
+      return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
+      const response = await axios.post(`${baseApiUrl}/login`, {
         email,
         password,
       });
 
       if (response.data.success) {
         onLoginSuccess(email, response.data.user.name); // Notify App.jsx that login was successful
-
-        // After successful login, update the 'isActive' and 'last_login_time'
         await updateLoginDetails(email);
       } else {
         alert("Invalid credentials");
@@ -91,17 +90,12 @@ function Form({ onLoginSuccess }) {
   // Send a request to update 'isActive' and 'last_login_time' in the database
   const updateLoginDetails = async (email) => {
     try {
-      const response = await axios.put("http://localhost:3000/api/updateLoginDetails", {
+      const response = await axios.put(`${baseApiUrl}/updateLoginDetails`, {
         email,
       });
-
-      if (response.data.success) {
-        console.log("User status and last login time updated");
-      } else {
-        console.error("Failed to update user status");
-      }
     } catch (err) {
       console.error("Error updating user details:", err);
+      setIsError({msg: 'Error updating user details.', open: true});
     }
   };
 

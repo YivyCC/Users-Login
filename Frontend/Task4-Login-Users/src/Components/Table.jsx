@@ -6,11 +6,13 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
     const [tableData, setTableData] = useState([]);
     const [error, setError] = useState(null);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+    const baseApiUrl = 'https://users-login-1.onrender.com/api';
 
+    // Initial table data fetch
     useEffect(()=>{
         const fetchData = async () =>{
             try{
-                const response = await axios.get('http://localhost:3000/api/users');
+                const response = await axios.get(`${baseApiUrl}/users`);
                 setTableData(response.data);
             } catch (err){
                 setError(err.message);
@@ -20,7 +22,7 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
     }, []);
 
     function lastSeen(lastLoginTimeDB){
-        if (lastLoginTimeDB === null) return 'Never';
+        if (lastLoginTimeDB === null) return 'Never'; // If a user registered but never logged in
         const currentTime = new Date();
         const lastLoginTime = new Date(lastLoginTimeDB);
         const timeDifference = currentTime - lastLoginTime;
@@ -57,9 +59,9 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
     // Handle select all checkbox
     const handleSelectAllChange = () => {
         if (selectAll) {
-            setSelectedUsers([]); // Deselect all if already selected
+            setSelectedUsers([]);
         } else {
-            setSelectedUsers(tableData.map((user) => user.email)); // Select all users by their emails
+            setSelectedUsers(tableData.map((user) => user.email));
         }
         setSelectAll(!selectAll);
     };
@@ -87,7 +89,6 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
         }
         setSortConfig({ key, direction });
     };
-
 
     return (
         <>
@@ -153,7 +154,6 @@ function Table({loggedUserEmail, loggedUserName, setIsLoggedIn}) {
                 </table>
             </div>
         </main>
-
         </>
     )
 }

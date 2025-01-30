@@ -7,59 +7,17 @@ import { useState } from 'react'
 
 function Toolbar({usersData, setTableData, loggedUserEmail, setIsLoggedIn}) {
   const [error, setIsError] = useState({ msg: '', open: false });
-
-  // Handle closing the error message
-  const handleCloseError = () => {
-    setIsError({ ...error, open: false });
-  };
-
-  // Check if the logged-in user is blocked
-  const checkIfUserBlockedDeleted = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/users/${loggedUserEmail}`);
-
-      const loggedInUser = response.data;
-      if (loggedInUser.isblocked) {
-        setIsError({msg: 'Your account has been blocked. Redirecting you to the login page.', open: true});
-        setIsLoggedIn(false); // Redirect to the login page
-        updateIsActiveOffline(loggedUserEmail);
-        return true; // User is blocked
-      }
-    } catch (error) {
-      setIsError({msg: 'Your account has been deleted. Redirecting you to the login page.', open: true});
-      setIsLoggedIn(false);
-      console.error("You were deleted", error.response || error);
-      return true; // If there's an error, assume the user was not found, hence deleted.
-    }
-    return false;
-  };
-
-  // Send a request to update 'isActive' and 'last_login_time' in the database
-  const updateIsActiveOffline = async (email) => {
-    try {
-      const response = await axios.put("http://localhost:3000/api/updateIsActiveOffline", {
-        email,
-      });
-
-      // if (response.data.success) {
-      //   alert("User status changed to offline");
-      // } else {
-      //   console.error("Failed to update user status");
-      // }
-    } catch (err) {
-      console.error("Error updating user details:", err);
-    }
-  };  
+  const baseApiUrl = 'https://users-login-1.onrender.com/api';
 
   // Handle block, unblock, delete actions
   const handleAction = async (action) => {
-    // Check if user is blocked before proceeding with the action
+    // Check if user is blocked before proceeding with any action
     const isBlockedDeleted = await checkIfUserBlockedDeleted();
     if (isBlockedDeleted) {
-      return; // If blocked, stop further execution
+      return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/api/bulk-action", {
+      const response = await axios.post(`${baseApiUrl}/bulk-action`, {
         action,
         users: usersData,
       });
@@ -67,7 +25,7 @@ function Toolbar({usersData, setTableData, loggedUserEmail, setIsLoggedIn}) {
       if (response.data.success) {
         setIsError({msg: `${action} successful for selected user(s)!`, open: true});
         
-        // Update tableData without refetching
+        // Update tableData without re-fetching
         setTableData((prevData) => {
           return prevData.map((user) => {
             if (usersData.includes(user.email)) {
@@ -81,16 +39,53 @@ function Toolbar({usersData, setTableData, loggedUserEmail, setIsLoggedIn}) {
               }
             }
             return user;
-          }).filter((user) => user !== null); // Remove deleted users
+          }).filter((user) => user !== null); // Remove deleted users (null)
         });
 
       } else {
-        alert(`Failed to ${action} users.`);
+        setIsError({msg: `Failed to ${action} users.`, open: true});
       }
     } catch (error) {
       console.error("Error performing action:", error);
-      setIsError({msg: "An error occurred while performing the action.", open: true});
+      setIsError({msg: `Failed to ${action} users.`, open: true});
     }
+  };
+
+  // Check if the logged-in user is blocked
+  const checkIfUserBlockedDeleted = async () => {
+    try {
+      const response = await axios.get(`${baseApiUrl}/users/${loggedUserEmail}`);
+
+      const loggedInUser = response.data;
+      if (loggedInUser.isblocked) {
+        setIsError({msg: 'Your account has been blocked. Redirecting you to the login page.', open: true});
+        setIsLoggedIn(false); // Notify Table.jsx to notify App.jsx to redirect to the login page
+        updateIsActiveOffline(loggedUserEmail);
+        return true;
+      }
+    } catch (error) {
+      setIsError({msg: 'Your account has been deleted. Redirecting you to the login page.', open: true});
+      setIsLoggedIn(false);
+      console.error("You were deleted", error.response || error);
+      return true; // If there's an error, assume the user was not found, hence deleted.
+    }
+    return false;
+  };
+
+  // Send a request to update 'isActive' and 'last_login_time' in the database if user gets logged out
+  const updateIsActiveOffline = async (email) => {
+    try {
+      const response = await axios.put(`${baseApiUrl}/updateIsActiveOffline`, {
+        email,
+      });
+    } catch (err) {
+      console.error("Error updating user details:", err);
+    }
+  };  
+
+  // Handle closing the error message
+  const handleCloseError = () => {
+    setIsError({ ...error, open: false });
   };
 
   return (

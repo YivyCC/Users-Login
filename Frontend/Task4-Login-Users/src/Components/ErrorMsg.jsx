@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 export default function ErrorMsg({ msg, open, onClose }) {
-  // Handle the closing of the error message
+
   const handleClose = () => {
-    onClose(); // Trigger the parent's setState function to close the error
+    onClose();
   };
 
   return (
