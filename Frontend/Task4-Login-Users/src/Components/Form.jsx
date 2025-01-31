@@ -91,12 +91,11 @@ function Form({ onLoginSuccess }) {
   // Send a request to update 'isActive' and 'last_login_time' in the database
   const updateLoginDetails = async (email) => {
     try {
-      const response = await axios.put(`${baseApiUrl}/updateLoginDetails`, {
+      await axios.put(`${baseApiUrl}/updateLoginDetails`, {
         email,
       });
     } catch (err) {
       console.error("Error updating user details:", err);
-      setIsError({msg: 'Error updating user details.', open: true});
     }
   };
 
