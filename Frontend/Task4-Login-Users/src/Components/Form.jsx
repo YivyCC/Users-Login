@@ -77,8 +77,8 @@ function Form({ onLoginSuccess }) {
       });
 
       if (response.data.success) {
-        onLoginSuccess(email, response.data.user.name); // Notify App.jsx that login was successful
         await updateLoginDetails(email);
+        onLoginSuccess(email, response.data.user.name); // Notify App.jsx that login was successful
       } else {
         alert("Invalid credentials");
       }
